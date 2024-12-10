@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "external.api.url",
+    "type": "java.lang.String",
+    "description": "A description for 'external.api.url'"
+  },
+  {
+    "name": "external.api.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'external.api.timeout'"
+  }
+]}
