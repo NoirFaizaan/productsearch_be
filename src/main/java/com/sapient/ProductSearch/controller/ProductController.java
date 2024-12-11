@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.sapient.ProductSearch.dto.ProductResponseDTO;
-import com.sapient.ProductSearch.entity.Product;
 import com.sapient.ProductSearch.exceptions.InvalidInputException;
 import com.sapient.ProductSearch.exceptions.ProductNotFoundException;
 import com.sapient.ProductSearch.service.ProductService;
 import com.sapient.ProductSearch.util.ApiResponse;
+
+import jakarta.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("/api/products")
@@ -24,6 +25,17 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+      @PostConstruct
+    public void initializeProductData() {
+        try {
+            logger.info("Automatically initializing product data on application startup...");
+            ResponseEntity<ApiResponse> response = loadProducts();
+            logger.info("Automatic product initialization.", response.getStatusCode());
+        } catch (Exception e) {
+            logger.error("Failed to initialize product data on startup", e);
+        }
+    }
 
     /**
      * Orchestration API to load products into in-memory DB.

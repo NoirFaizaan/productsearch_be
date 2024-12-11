@@ -53,10 +53,10 @@
 			<artifactId>resilience4j-spring-boot2</artifactId>
 			<version>1.7.0</version>
 		</dependency>
-		<!-- Postgres Database for In-Memory DB-->
+		<!-- H2 Database for In-Memory DB-->
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- Lombok for simplifying code -->
@@ -66,22 +66,13 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- Swagger for API Documentation -->
-		<!-- <dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.6</version>
-		</dependency> -->
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.1.0</version> <!-- Use the latest stable version -->
 		</dependency>
 
-		<!-- -->
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> -->
 		<!-- SLF4J for logging -->
 
 		<dependency>
@@ -106,6 +97,31 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- JUnit 5 dependencies -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Mockito dependencies -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.3.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
@@ -121,6 +137,13 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jacoco</groupId>
+				<artifactId>org.jacoco.agent</artifactId>
+				<version>0.8.8</version>
+				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -150,6 +173,32 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version> <!-- Use an appropriate version -->
+				<configuration>
+					<argLine>
+						-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.8.8/org.jacoco.agent-0.8.8-runtime.jar=destfile=target/jacoco.exec</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version> <!-- Use latest version -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal> <!-- Activates JaCoCo agent -->
+							<goal>report</goal> <!-- Generates report -->
+						</goals>
+						<configuration>
+							<outputDirectory>target/site/jacoco</outputDirectory> <!-- Path for
+							generated report -->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

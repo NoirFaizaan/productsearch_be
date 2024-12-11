@@ -28,7 +28,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -215,6 +214,9 @@ public class ProductService {
      * Convert a list of Review entities to ReviewDTOs
      */
     private List<ReviewDTO> convertToReviewDTOs(List<Review> reviews) {
+        if (reviews == null) {
+            return new ArrayList<>();  // Return an empty list if reviews is null
+        }
         List<ReviewDTO> reviewDTOs = new ArrayList<>();
         for (Review review : reviews) {
             reviewDTOs.add(new ReviewDTO(
